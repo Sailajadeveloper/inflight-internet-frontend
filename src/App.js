@@ -11,12 +11,12 @@ function App() {
   const [activationDetails, setActivationDetails] = useState({});
 
   useEffect(() => {
-    axios.get('/api/getPlans')
+    axios.get('http://localhost:2000/api/getPlans')
     .then(response => {
-      console.log('Fetched plans:', response.data); 
-      setPlans(response.data);
-    })
-      .catch(error => console.error('Error fetching plans:', error));
+      // console.log(response,"===========plans response")
+      console.log('Fetched plans:', response.data.result); 
+      setPlans(response.data.result.data);
+    }).catch(error => console.error('Error getting plan List:', error));
   }, []);
 
   const activatePlan = (planId) => {
@@ -24,9 +24,10 @@ function App() {
     const endTime = new Date(startTime.getTime() + 1 * 60 * 60 * 1000); 
     const usage = Math.floor(Math.random() * 100);
 
-    axios.post('/api/planActivate', { planId, startTime, endTime, usage })
+    axios.post('http://localhost:2000/api/planActivate', { planId, startTime, endTime, usage })
       .then(response => {
-        setActivationDetails(response.data);
+        // console.log(response,"==============active response")
+        setActivationDetails(response.data.result.data);
         setSelectedPlan(null);
       })
       .catch(error => console.error('Error activating plan:', error));
